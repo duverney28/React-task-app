@@ -2,7 +2,7 @@ import TaskCard from "./TaskCard";
 import Taskfilter from "./Taskfilter";
 import { useState, useEffect } from "react";
 
-function TaskList({ tasks, deleteTask, updateTask }) {
+function TaskList({ tasks, deleteTask, updateTask, toggleTaskStatus }) {
   const [filterTerm, setFilterTerm] = useState("");
 
   const handleFilterChange = (term) => {
@@ -31,6 +31,7 @@ function TaskList({ tasks, deleteTask, updateTask }) {
           task={task}
           deleteTask={deleteTask}
           updateTask={updateTask}
+          toggleTaskStatus={toggleTaskStatus}
         />
       ))}
     </div>

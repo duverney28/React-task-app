@@ -2,12 +2,15 @@ import TaskModal from "./TaskModal";
 import React, { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
-function TaskCard({ task, deleteTask, updateTask }) {
+function TaskCard({ task, deleteTask, updateTask, toggleTaskStatus }) {
   const [currentYear, setCurrentYear] = useState(0);
   const [currentMonth, setCurrentMonth] = useState(0);
   const [currentDay, setCurrentDay] = useState(0);
   const [currentHour, setCurrentHour] = useState(0);
   const [currentMinute, setCurrentMinute] = useState(0);
+  const [button, setbutton] = useState(
+    "bg-red-500 px-1 py-1 mx-5 rounded-md mt-4 hover:bg-red-400"
+  );
 
   useEffect(() => {
     const checkTimeAndShowNotification = () => {
@@ -39,6 +42,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
       );
 
       if (
+        !task.isCompleted &&
         currentYear === parseInt(taskYear) &&
         currentMonth === parseInt(taskMonth) &&
         currentDay === parseInt(taskDay) &&
@@ -48,7 +52,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
         console.log("Entró al if y mostró la notificación");
         toast.success(`Es hora de "${task.tittle}"`, {
           position: "top-right",
-          autoClose: 5000,
+          autoClose: 6000,
           hideProgressBar: true,
           closeOnClick: true,
           pauseOnHover: true,
@@ -77,10 +81,17 @@ function TaskCard({ task, deleteTask, updateTask }) {
     setIsModalOpen(true);
   };
 
+  const handleColorButton = () => {
+    const greencolorbutton =
+      "bg-green-500 px-1 py-1 mx-5 rounded-md mt-4 hover:bg-green-400";
+    const redbutton =
+      "bg-red-500 px-1 py-1 mx-5 rounded-md mt-4 hover:bg-red-400";
+    setbutton(task.isCompleted ? redbutton : greencolorbutton);
+  };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-
   return (
     <div className=" bg-gray-800 text-white p-6 rounded-md">
       <h1 className="text-xl font-bold capitalize ">{task.tittle}</h1>
@@ -93,6 +104,7 @@ function TaskCard({ task, deleteTask, updateTask }) {
       >
         eliminar tarea
       </button>
+
       <button
         className="bg-yellow-500 px-4 py-1 mx-2 rounded-md mt-4 hover:bg-yellow-400"
         onClick={() => {
@@ -100,6 +112,17 @@ function TaskCard({ task, deleteTask, updateTask }) {
         }}
       >
         Editar tarea
+      </button>
+      <button
+        className={button}
+        onClick={() => {
+          toggleTaskStatus(task.id);
+          handleColorButton();
+        }}
+      >
+        {task.isCompleted
+          ? "Marcar como no finalizada"
+          : " Marcar como finalizada"}
       </button>
       {isModalOpen && (
         <TaskModal

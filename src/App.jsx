@@ -2,7 +2,7 @@ import TaskList from "./components/TaskList";
 import Taskform from "./components/TaskForm";
 import { tasks as data } from "./data/tasks";
 import { useState, useEffect } from "react";
-import { ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
@@ -43,9 +43,18 @@ function App() {
         description: task.description,
         fecha: task.fecha,
         time: task.time,
+        isCompleted: false,
       },
     ]);
   }
+
+  const toggleTaskStatus = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id == taskId ? { ...task, isCompleted: !task.isCompleted } : task
+      )
+    );
+  };
 
   function deleteTask(taskId) {
     setTasks(tasks.filter((task) => task.id !== taskId));
@@ -54,12 +63,13 @@ function App() {
   return (
     <main className="bg-zinc-500 h-full">
       <div className="container mx-auto">
-      <ToastContainer/>
+        <ToastContainer />
         <Taskform createTask={createTask} />
         <TaskList
           tasks={tasks}
           deleteTask={deleteTask}
           updateTask={updateTask}
+          toggleTaskStatus={toggleTaskStatus}
         />
       </div>
     </main>
