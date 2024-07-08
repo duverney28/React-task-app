@@ -136,6 +136,9 @@ function TaskCard({ task, deleteTask, updateTask, toggleTaskStatus }) {
         />
       )}
     </div>
+
+
+//modifico el taskcard
   );
 }
 
